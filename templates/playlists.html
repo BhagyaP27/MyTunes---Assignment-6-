@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Playlists · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero page-title">
+  <h1>Playlists</h1>
+  <p>Open a playlist to demonstrate ordered tracks and a total duration report.</p>
+</section>
+<div class="grid grid-3">
+  {% for playlist in playlists %}
+  <div class="card">
+    <h2><a href="{{ url_for('playlist_detail', playlist_id=playlist.playlist_id) }}">{{ playlist.name }}</a></h2>
+    <p class="small">Created by {{ playlist.username }} · {{ playlist.created_at[:10] }}</p>
+    <p>{{ playlist.description }}</p>
+    <div class="meta-row">
+      <span class="badge">{{ playlist.track_count }} tracks</span>
+      <span class="badge green">{{ format_duration(playlist.total_duration) }}</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

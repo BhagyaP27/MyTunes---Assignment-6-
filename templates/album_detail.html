@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}{{ album.title }} · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ album.title }}</h1>
+  <div class="meta-row">
+    <span class="badge">{{ album.release_year }}</span>
+    <span class="badge">{{ album.artist_name }}</span>
+    <span class="badge">{{ album.track_count }} tracks</span>
+    <span class="badge green">{{ format_duration(album.total_duration) }}</span>
+  </div>
+  <p class="subtle">This page is the secondary refinement step: from an artist result or a genre result, click an album to see all tracks and genres for that album.</p>
+  <p class="small">Label: {{ album.label }} · Producer: {{ album.producer }}</p>
+  <div class="badges">
+    {% for genre in genres %}
+      <a class="badge" href="{{ url_for('genre_albums', genre_id=genre.genre_id) }}">{{ genre.name }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Track listing</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Track</th>
+          <th>Credits</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for track in tracks %}
+        <tr>
+          <td>{{ track.track_no }}</td>
+          <td>{{ track.title }}</td>
+          <td>{{ track.credits }}</td>
+          <td>{{ format_duration(track.duration_sec) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

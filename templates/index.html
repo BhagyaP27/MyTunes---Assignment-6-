@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}MyTunes+ Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>MyTunes+ Personal Music Collection Database</h1>
+  <p>
+    This custom Flask web interface wraps a local SQLite database for browsing artists, albums, tracks,
+    playlists, and genres. It is designed to support the project's main use cases: finding all tracks by an artist,
+    calculating playlist totals, exploring many-to-many relationships, and refining one query into another.
+  </p>
+  <div class="actions">
+    <a class="button" href="{{ url_for('artists') }}">Open Artist Query Demo</a>
+    <a class="button secondary" href="{{ url_for('playlists') }}">Open Playlist Query Demo</a>
+  </div>
+</section>
+
+<section class="grid grid-4">
+  <div class="stat"><div class="label">Artists</div><div class="value">{{ stats.artists }}</div></div>
+  <div class="stat"><div class="label">Albums</div><div class="value">{{ stats.albums }}</div></div>
+  <div class="stat"><div class="label">Tracks</div><div class="value">{{ stats.tracks }}</div></div>
+  <div class="stat"><div class="label">Playlists</div><div class="value">{{ stats.playlists }}</div></div>
+</section>
+
+<section class="grid grid-2 section-spacer">
+  <div class="panel">
+    <h2>Featured artists</h2>
+    <p class="subtle">Artist page = primary use-case query + N:N relationship demo through TRACK_ARTIST.</p>
+    <div class="grid">
+      {% for artist in featured_artists %}
+      <div class="card">
+        <h3><a href="{{ url_for('artist_detail', artist_id=artist.artist_id) }}">{{ artist.name }}</a></h3>
+        <div class="meta-row">
+          <span class="badge">{{ artist.country or 'Unknown country' }}</span>
+          <span class="badge green">{{ artist.credited_tracks }} credited tracks</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Featured playlists</h2>
+    <p class="subtle">Playlist page = second main use case showing ordered tracks and total duration.</p>
+    <div class="grid">
+      {% for playlist in featured_playlists %}
+      <div class="card">
+        <h3><a href="{{ url_for('playlist_detail', playlist_id=playlist.playlist_id) }}">{{ playlist.name }}</a></h3>
+        <p class="small">{{ playlist.description }}</p>
+        <div class="meta-row">
+          <span class="badge">{{ playlist.track_count }} tracks</span>
+          <span class="badge green">{{ format_duration(playlist.total_duration) }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

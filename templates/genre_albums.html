@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}{{ genre.name }} · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ genre.name }} albums</h1>
+  <p class="subtle">This page demonstrates a many-to-many query using ALBUM_GENRE. Clicking any album refines the result into its full track listing and metadata.</p>
+</section>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Album</th>
+        <th>Artist</th>
+        <th>Year</th>
+        <th>Label</th>
+        <th>Producer</th>
+        <th>Tracks</th>
+        <th>Total duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for album in albums %}
+      <tr>
+        <td><a href="{{ url_for('album_detail', album_id=album.album_id) }}">{{ album.title }}</a></td>
+        <td>{{ album.artist_name }}</td>
+        <td>{{ album.release_year }}</td>
+        <td>{{ album.label }}</td>
+        <td>{{ album.producer }}</td>
+        <td>{{ album.track_count }}</td>
+        <td>{{ format_duration(album.total_duration) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

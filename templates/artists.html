@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Artists · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero page-title">
+  <h1>Artists</h1>
+  <p>Choose an artist to run the “all tracks by artist” query and then drill down into albums.</p>
+</section>
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Artist</th>
+        <th>Country</th>
+        <th>Start year</th>
+        <th>Albums</th>
+        <th>Credited tracks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for artist in artists %}
+      <tr>
+        <td><a href="{{ url_for('artist_detail', artist_id=artist.artist_id) }}">{{ artist.name }}</a></td>
+        <td>{{ artist.country or '—' }}</td>
+        <td>{{ artist.start_year or '—' }}</td>
+        <td>{{ artist.album_count }}</td>
+        <td>{{ artist.credited_tracks }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

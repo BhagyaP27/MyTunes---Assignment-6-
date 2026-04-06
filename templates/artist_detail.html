@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}{{ artist.name }} · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ artist.name }}</h1>
+  <div class="meta-row">
+    <span class="badge">{{ artist.country or 'Unknown country' }}</span>
+    <span class="badge">Started {{ artist.start_year or '—' }}</span>
+    <span class="badge green">Primary query: all tracks by artist</span>
+  </div>
+  <p class="subtle">This page demonstrates a many-to-many query using TRACK_ARTIST. It lists every track connected to {{ artist.name }}, including role information and collaborators.</p>
+  <p class="small">Followed by: {% if followed_by %}{% for user in followed_by %}{{ user.username }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}No followers in sample data{% endif %}</p>
+</section>
+
+<section class="panel">
+  <h2>Albums by {{ artist.name }}</h2>
+  <div class="grid grid-3">
+    {% for album in albums %}
+    <div class="card">
+      <h3><a href="{{ url_for('album_detail', album_id=album.album_id) }}">{{ album.title }}</a></h3>
+      <p class="small">{{ album.release_year }} · {{ album.label }}</p>
+      <div class="meta-row">
+        <span class="badge">{{ album.track_count }} tracks</span>
+        <span class="badge green">{{ format_duration(album.total_duration) }}</span>
+      </div>
+      <p class="small">Producer: {{ album.producer }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel section-spacer">
+  <h2>All tracks credited to {{ artist.name }}</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Track</th>
+          <th>Album</th>
+          <th>Year</th>
+          <th>Role(s)</th>
+          <th>All credited artists</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for track in tracks %}
+        <tr>
+          <td>{{ track.track_no }}. {{ track.track_title }}</td>
+          <td><a href="{{ url_for('album_detail', album_id=track.album_id) }}">{{ track.album_title }}</a></td>
+          <td>{{ track.release_year }}</td>
+          <td>{{ track.roles }}</td>
+          <td>{{ track.all_artists }}</td>
+          <td>{{ format_duration(track.duration_sec) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

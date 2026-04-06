@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Not found · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Page not found</h1>
+  <p>The page you requested does not exist in the sample project application.</p>
+  <div class="actions">
+    <a class="button" href="{{ url_for('index') }}">Back to home</a>
+  </div>
+</section>
+{% endblock %}

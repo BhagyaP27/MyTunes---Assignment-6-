@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Genres · MyTunes+{% endblock %}
+{% block content %}
+<section class="hero page-title">
+  <h1>Genres</h1>
+  <p>Choose a genre to show the many-to-many ALBUM_GENRE query, then refine into a specific album.</p>
+</section>
+<div class="grid grid-3">
+  {% for genre in genres %}
+  <div class="card">
+    <h2><a href="{{ url_for('genre_albums', genre_id=genre.genre_id) }}">{{ genre.name }}</a></h2>
+    <div class="meta-row">
+      <span class="badge">{{ genre.album_count }} albums</span>
+      <span class="badge green">N:N demo</span>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
